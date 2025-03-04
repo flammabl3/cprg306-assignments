@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const NewItem = () => {
+const NewItem = ({items, setItems}) => {
     let [name, setName] = useState("");
     let [quantity, setQuantity] = useState(1);
     let [category, setCategory] = useState("produce");
@@ -25,6 +25,7 @@ const NewItem = () => {
             alert("Please enter a valid item.");
         } else {
             alert(`Item added: ${name}, ${quantity}, ${category}`);
+            setItems([...items, {id: generateRandomId(), name: name, quantity: quantity, category: category}]);
         }
         reset();
         return;
@@ -52,6 +53,17 @@ const NewItem = () => {
         setCategory("produce");
     }
 
+    function generateRandomId(length = 19) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    }
+    
+    console.log(generateRandomId());
+
     return (
         <form onSubmit={handleSubmit}>
         <div className={"flex flex-col max-w-sm w-full items-center p-2 m-2"}>
@@ -72,30 +84,32 @@ const NewItem = () => {
             {/* Row 2: Quantity and Category */}
             <div className={"flex justify-between items-center w-full space-x-4"}>
                 <div className={"bg-white text-black p-2 mt-1 mb-1 rounded flex-1 flex items-center"}>
-                    <span className={"flex justify-between items-center w-full"}>
+                    <span className={"flex items-center w-full justify-between"}>
                         {quantity}
-                        <button
-                            className={
-                                "bg-purple-500 hover:bg-purple-700 py-1 px-2 ml-6 rounded text-white w-10"
-                            }
-                            onClick={(event) => {
-                                handleChange(event);
-                                decrement(event);
-                            }}
-                        >
-                            -
-                        </button>
-                        <button
-                            className={
-                                "bg-purple-500 hover:bg-purple-700 py-1 ml-1 px-2 rounded text-white w-10"
-                            }
-                            onClick={(event) => {
-                                handleChange(event);
-                                increment(event);
-                            }}
-                        >
-                            +
-                        </button>
+                        <div>
+                            <button
+                                className={
+                                    "bg-purple-500 hover:bg-purple-700 py-1 px-2 ml-6 rounded text-white w-10"
+                                }
+                                onClick={(event) => {
+                                    handleChange(event);
+                                    decrement(event);
+                                }}
+                            >
+                                -
+                            </button>
+                            <button
+                                className={
+                                    "bg-purple-500 hover:bg-purple-700 py-1 ml-1 px-2 rounded text-white w-10"
+                                }
+                                onClick={(event) => {
+                                    handleChange(event);
+                                    increment(event);
+                                }}
+                            >
+                                +
+                            </button>
+                        </div>
                     </span>
                 </div>
 

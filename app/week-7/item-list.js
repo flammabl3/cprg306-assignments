@@ -1,13 +1,16 @@
 "use client";
 
 import Item from "./item";
-import itemsData from "./items.json";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function ItemList(props) {
+export default function ItemList({items, setItems}) {
     let [sortBy, setSortBy] = useState("name");
-    let [items, setItems] = useState(itemsData);
+    let [sortedItems, setSortedItems] = useState([]);
+
+    useEffect(() => {
+      sortItems(sortBy);
+    }, [items, sortBy]);
 
     function toTitleCase(str) {
         return str.replace(
@@ -18,13 +21,13 @@ export default function ItemList(props) {
 
     const sortItems = (newSort) => {
         if (newSort === "name") {
-            setItems(itemsData.sort((a, b) => a.name.localeCompare(b.name)));
+          setSortedItems(items.sort((a, b) => a.name.localeCompare(b.name)));
         } else if (newSort === "category") {
-            setItems(itemsData.sort((a, b) => a.category.localeCompare(b.category)));
+          setSortedItems(items.sort((a, b) => a.category.localeCompare(b.category)));
         } else if (newSort === "group") {
             // reduce to an array of arrays, which use group names as keys.
-            setItems(
-                itemsData.reduce(
+            setSortedItems(
+                items.reduce(
                     (acc, item) => {
                         let group = item.category;
 
@@ -94,7 +97,7 @@ export default function ItemList(props) {
         </div>
         <ul className="2xl w-1/3 p-2 m-2">
             {
-                renderItems(items, sortBy)
+                renderItems(sortedItems, sortBy)
             } 
         </ul>
       </div>
