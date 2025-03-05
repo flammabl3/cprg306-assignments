@@ -24,7 +24,6 @@ const NewItem = ({items, setItems}) => {
         if (name === "") {
             alert("Please enter a valid item.");
         } else {
-            alert(`Item added: ${name}, ${quantity}, ${category}`);
             setItems([...items, {id: generateRandomId(), name: name, quantity: quantity, category: category}]);
         }
         reset();

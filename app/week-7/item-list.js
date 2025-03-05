@@ -19,32 +19,27 @@ export default function ItemList({items, setItems}) {
         );
       }
 
-    const sortItems = (newSort) => {
+      const sortItems = (newSort) => {
+        let sorted = [];
         if (newSort === "name") {
-          setSortedItems(items.sort((a, b) => a.name.localeCompare(b.name)));
+            sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
         } else if (newSort === "category") {
-          setSortedItems(items.sort((a, b) => a.category.localeCompare(b.category)));
+            sorted = [...sorted].sort((a, b) => a.name.localeCompare(b.name));
+            sorted = [...items].sort((a, b) => a.category.localeCompare(b.category));
         } else if (newSort === "group") {
-            // reduce to an array of arrays, which use group names as keys.
-            setSortedItems(
-                items.reduce(
-                    (acc, item) => {
-                        let group = item.category;
-
-                        if (!acc[group]) {
-                            acc[group] = [];
-                        }
-
-                        acc[group].push(item);
-                        return acc;
-                    }
-                    , {}
-                )
-            )
+            sorted = [...items].sort((a, b) => a.name.localeCompare(b.name));
+            sorted = sorted .reduce((acc, item) => {
+                let group = item.category;
+                if (!acc[group]) {
+                    acc[group] = [];
+                }
+                acc[group].push(item);
+                return acc;
+            }, {});
         }
+        setSortedItems(sorted);
         setSortBy(newSort);
-        return;
-    }
+    };
 
     
     const renderItems = (items, sortBy) => {
